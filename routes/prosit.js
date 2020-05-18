@@ -14,62 +14,64 @@ router.get('/:num_prosit?', function (req, res, next) {
                 message: error
             })
         } else {
-            num = rows[0].id
-            prosit.getKeywords(num, function (error, keywords) {
-                if (error) {
-                    res.json({
-                        status: 'Error',
-                        message: error
-                    })
-                } else {
-                    prosit.getConstraints(num, function (error, constraint) {
-                        if (error) {
-                            res.json({
-                                status: 'Error',
-                                message: error
-                            })
-                        } else {
-                            prosit.getProblematics(num, function (error, problematics) {
-                                if (error) {
-                                    res.json({
-                                        status: 'Error',
-                                        message: error
-                                    })
-                                } else {
-                                    prosit.getHyptothesies(num, function (error, hyptothesies) {
-                                        if (error) {
-                                            res.json({
-                                                status: 'Error',
-                                                message: error
-                                            })
-                                        } else {
-                                            prosit.getPa(num, function (error, pa) {
-                                                if (error) {
-                                                    res.json({
-                                                        status: 'Error',
-                                                        message: error
-                                                    })
-                                                } else {
-                                                    res.json({
-                                                        name: rows[0].name,
-                                                        context: rows[0].context,
-                                                        generalisation: rows[0].generalisation,
-                                                        keywords: keywords,
-                                                        constraints: constraint,
-                                                        problematics: problematics,
-                                                        hyptothesies: hyptothesies,
-                                                        pa: pa
-                                                    })
-                                                }
-                                            })
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    })
-                }
-            })
+            if(rows.length > 0) {
+                num = rows[0].id
+                prosit.getKeywords(num, function (error, keywords) {
+                    if (error) {
+                        res.json({
+                            status: 'Error',
+                            message: error
+                        })
+                    } else {
+                        prosit.getConstraints(num, function (error, constraint) {
+                            if (error) {
+                                res.json({
+                                    status: 'Error',
+                                    message: error
+                                })
+                            } else {
+                                prosit.getProblematics(num, function (error, problematics) {
+                                    if (error) {
+                                        res.json({
+                                            status: 'Error',
+                                            message: error
+                                        })
+                                    } else {
+                                        prosit.getHyptothesies(num, function (error, hyptothesies) {
+                                            if (error) {
+                                                res.json({
+                                                    status: 'Error',
+                                                    message: error
+                                                })
+                                            } else {
+                                                prosit.getPa(num, function (error, pa) {
+                                                    if (error) {
+                                                        res.json({
+                                                            status: 'Error',
+                                                            message: error
+                                                        })
+                                                    } else {
+                                                        res.json({
+                                                            name: rows[0].name,
+                                                            context: rows[0].context,
+                                                            generalisation: rows[0].generalisation,
+                                                            keywords: keywords,
+                                                            constraints: constraint,
+                                                            problematics: problematics,
+                                                            hyptothesies: hyptothesies,
+                                                            pa: pa
+                                                        })
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
         }
     })
 });
