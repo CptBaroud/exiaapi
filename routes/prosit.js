@@ -5,6 +5,7 @@ const prosit = require('../models/prosits')
 let num = 0
 let errorCount = 0
 let errorsArray = []
+
 /* GET home page. */
 router.get('/:num_prosit?', function (req, res, next) {
     prosit.getProsit(req.params.num_prosit, function (error, rows) {
@@ -14,7 +15,7 @@ router.get('/:num_prosit?', function (req, res, next) {
                 message: error
             })
         } else {
-            if(rows.length > 0) {
+            if (rows.length > 0) {
                 num = rows[0].id
                 prosit.getKeywords(num, function (error, keywords) {
                     if (error) {
@@ -71,23 +72,41 @@ router.get('/:num_prosit?', function (req, res, next) {
                         })
                     }
                 })
+            } else {
+                res.json({
+                    status: 'Error',
+                    message: 'This prosit do not exist'
+                })
             }
         }
     })
 });
 
+router.get('/get/all', function (req, res) {
+    prosit.getAllProsit(function (errors, rows) {
+        if(errors){
+            res.json({
+                status: "Erreur",
+                message: errors
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
 router.get('/check/:num_prosit?', function (req, res, next) {
     const temp = req.params.num_prosit
     prosit.check(temp, function (error, rows) {
-        if (error){
+        if (error) {
             res.json({
                 status: "Erreur",
                 state: false,
                 message: error
             })
         } else {
-            if(rows.length !== 0) {
-                if(rows[0].num_prosit === parseInt(temp)){
+            if (rows.length !== 0) {
+                if (rows[0].num_prosit === parseInt(temp)) {
                     res.json({
                         status: "Succes",
                         state: true,
@@ -113,21 +132,24 @@ router.post('/', function (req, res, next) {
         name: req.body.name,
         num_prosit: req.body.numProsit,
         context: req.body.context,
-        generalisation: req.body.generalisation
+        generalisation: req.body.generalisation,
+        animateur: req.body.animateur,
+        secretaire: req.body.secretaire,
+        scribe: req.body.scribe,
+        gestionaire: req.body.gestionaire
     }
+    console.log(req.body)
     prosit.addProsit(data, function (errors, pr) {
         if (errors) {
-            res.json({
-                status: "Erreur",
-                message: errors
-            })
+            console.error(errors)
+            errorCount++
+            errorsArray.push(errors)
         } else {
             prosit.getLastId(function (error, result) {
                 if (error) {
-                    res.json({
-                        status: "Erreur",
-                        message: error
-                    })
+                    console.error(error)
+                    errorCount++
+                    errorsArray.push(error)
                 } else {
                     let id = result[0].id
                     req.body.keywords.forEach(function (item) {
@@ -137,6 +159,7 @@ router.post('/', function (req, res, next) {
                             num_prosit: id
                         }, function (error, rows) {
                             if (error) {
+                                console.error(error)
                                 errorCount++
                                 errorsArray.push(error)
                             }
@@ -148,6 +171,7 @@ router.post('/', function (req, res, next) {
                             num_prosit: id
                         }, function (error, rows) {
                             if (error) {
+                                console.error(error)
                                 errorCount++
                                 errorsArray.push(error)
                             }
@@ -159,6 +183,7 @@ router.post('/', function (req, res, next) {
                             num_prosit: id
                         }, function (error, rows) {
                             if (error) {
+                                console.error(error)
                                 errorCount++
                                 errorsArray.push(error)
                             }
@@ -170,6 +195,7 @@ router.post('/', function (req, res, next) {
                             num_prosit: id
                         }, function (error, rows) {
                             if (error) {
+                                console.error(error)
                                 errorCount++
                                 errorsArray.push(error)
                             }
@@ -181,6 +207,7 @@ router.post('/', function (req, res, next) {
                             num_prosit: id
                         }, function (error, rows) {
                             if (error) {
+                                console.error(error)
                                 errorCount++
                                 errorsArray.push(error)
                             }
@@ -190,7 +217,7 @@ router.post('/', function (req, res, next) {
             })
         }
 
-        if (errorCount > 1){
+        if (errorCount > 1) {
             res.json({
                 status: "Error",
                 data: errorsArray

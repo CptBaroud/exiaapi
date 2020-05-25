@@ -22,6 +22,9 @@ let prosit = {
     getProsit: function (id, callback) {
         return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id FROM prosit WHERE prosit.num_prosit = ' + id, callback)
     },
+    getAllProsit: function (callback) {
+        return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id, prosit.scribe FROM prosit', callback)
+    },
     addKeyword: function (data, callback) {
         return db.query('INSERT INTO keywords VALUE (?, ?, ?, ?)', [undefined, data.name, data.definition, data.num_prosit], callback)
     },
@@ -38,7 +41,7 @@ let prosit = {
         return db.query('INSERT INTO problematics VALUE (?, ?, ?)', [undefined, data.name, data.num_prosit], callback)
     },
     addProsit: function (data, callback) {
-        return db.query('INSERT INTO prosit VALUE (?, ?, ?, ?, ?)', [undefined, data.num_prosit, data.name, data.context, data.generalisation], callback)
+        return db.query('INSERT INTO prosit VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)', [undefined, data.num_prosit, data.name, data.context, data.generalisation, data.scribe, data.animateur, data.secretaire, data.gestionaire], callback)
     },
     getLastId: function  (callback) {
         return db.query('SELECT prosit.id FROM prosit ORDER BY prosit.id DESC', callback)

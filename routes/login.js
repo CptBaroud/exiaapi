@@ -64,21 +64,30 @@ router.post('/', function (req, res, next) {
                 error: error
             });
         } else {
-            bcrypt.compare(req.body.password, rows[0].password, function (err, result) {
-                if (err) {
-                    res.json({
-                        status: 'error',
-                        message: 'Le mot de passe est incorrect',
-                        error: err
-                    })
-                } else {
-                    //res.json(result)
-                    res.json({
-                        status: 'success',
-                        token: jwtUtils.generatedToken(req.body.username)
-                    })
-                }
-            })
+            console.log(rows)
+            if( rows.length > 0){
+                bcrypt.compare(req.body.password, rows[0].password, function (err, result) {
+                    if (err) {
+                        res.json({
+                            status: 'error',
+                            message: 'Le mot de passe est incorrect',
+                            error: err
+                        })
+                    } else {
+                        //res.json(result)
+                        res.json({
+                            status: 'success',
+                            token: jwtUtils.generatedToken(req.body.username)
+                        })
+                    }
+                })
+            } else {
+                rows.json({
+                    message: 'L\'utilisateur n\'existe pas',
+                    error: 'This user does not exist'
+                })
+            }
+
         }
         //}
         //});
