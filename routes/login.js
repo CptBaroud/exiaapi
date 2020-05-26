@@ -113,4 +113,10 @@ router.get('/all', function (req, res) {
     })
 });
 
+router.delete('/', function (req, res) {
+    res.json({
+        message: 'Disconnected'
+    })
+})
+
 module.exports = router;
