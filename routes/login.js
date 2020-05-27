@@ -82,12 +82,12 @@ router.post('/', function (req, res, next) {
                     }
                 })
             } else {
-                rows.json({
+                console.log(rows)
+                res.json({
                     message: 'L\'utilisateur n\'existe pas',
                     error: 'This user does not exist'
                 })
             }
-
         }
         //}
         //});
