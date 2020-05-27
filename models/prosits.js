@@ -45,6 +45,12 @@ let prosit = {
     },
     getLastId: function  (callback) {
         return db.query('SELECT prosit.id FROM prosit ORDER BY prosit.id DESC', callback)
+    },
+    getNumProsit: function (callback) {
+        return db.query('SELECT role.num_prosit FROM role', callback)
+    },
+    updateNumprosit: function (data, callback) {
+        return db.query('UPDATE role.num_prosit = \'' + data.num_prosit + '\' WHERE role.id = 1', callback)
     }
 };
 

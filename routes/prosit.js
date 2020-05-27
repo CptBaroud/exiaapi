@@ -230,4 +230,31 @@ router.post('/', function (req, res, next) {
     })
 })
 
+router.get('/get/numProsit', function (req, res, next) {
+    prosit.getNumProsit(function (error, rows) {
+        if(error){
+            res.json({
+                status: "Erreur",
+                message: error
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
+router.put('/update/numProsit', function (req, res) {
+    console.log(req.body.num_prosit)
+    prosit.updateNumprosit(req.body.num_prosit, function (error, rows) {
+        if(error){
+            res.json({
+                status: "Erreur",
+                message: error
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
 module.exports = router;
