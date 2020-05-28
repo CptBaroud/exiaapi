@@ -19,6 +19,9 @@ let login = {
             data.password,
             0
         ], callback)
+    },
+    getAllUserId: function (callback) {
+        return db.query('SELECT users.name, users.id FROM users', callback)
     }
 };
 

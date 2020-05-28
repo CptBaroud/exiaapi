@@ -65,7 +65,7 @@ router.post('/', function (req, res, next) {
             });
         } else {
             console.log(rows)
-            if( rows.length > 0){
+            if (rows.length > 0) {
                 bcrypt.compare(req.body.password, rows[0].password, function (err, result) {
                     if (err) {
                         res.json({
@@ -112,6 +112,20 @@ router.get('/all', function (req, res) {
         });
     })
 });
+
+/**
+ * Route pour récupéré tout les deviseurs
+ */
+router.get('/allId', function (req, res) {
+    login.getAllUserId(function (error, rows) {
+        if (error) {
+            res.json(error);
+        } else {
+            res.json(rows);
+        }
+    });
+})
+;
 
 router.delete('/', function (req, res) {
     res.json({
