@@ -48,8 +48,6 @@ router.post('/register', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    console.log('Start login')
-    console.log(req.body)
     login.getUser(req.body, function (error, rows) {
         /* jwt.verify(req.headers['token'], JWT_SECRET_SIGN, function (err) {
              if (err) {
@@ -64,25 +62,30 @@ router.post('/', function (req, res, next) {
                 error: error
             });
         } else {
-            console.log(rows)
             if (rows.length > 0) {
                 bcrypt.compare(req.body.password, rows[0].password, function (err, result) {
                     if (err) {
                         res.json({
                             status: 'error',
-                            message: 'Le mot de passe est incorrect',
+                            message: 'Une erreur est survenue',
                             error: err
                         })
                     } else {
-                        //res.json(result)
-                        res.json({
-                            status: 'success',
-                            token: jwtUtils.generatedToken(req.body.username)
-                        })
+                        if(result){
+                            res.json({
+                                status: 'success',
+                                token: jwtUtils.generatedToken(req.body.username)
+                            })
+                        } else {
+                            res.json({
+                                status: 'error',
+                                message: 'Le mot de passe est incorrect',
+                                error: err
+                            })
+                        }
                     }
                 })
             } else {
-                console.log(rows)
                 res.json({
                     message: 'L\'utilisateur n\'existe pas',
                     error: 'This user does not exist'
