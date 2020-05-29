@@ -50,7 +50,7 @@ let prosit = {
         return db.query('SELECT role.num_prosit FROM role', callback)
     },
     updateNumprosit: function (data, callback) {
-        return db.query('UPDATE role.num_prosit = \'' + data.num_prosit + '\' WHERE role.id = 1', callback)
+        return db.query('UPDATE role SET role.num_prosit = ? WHERE role.id = 1',data, callback)
     }
 };
 
