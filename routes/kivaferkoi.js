@@ -36,6 +36,7 @@ router.delete('/alreadyPicked', function (req, res) {
 
 /* POST alreadyPicked */
 router.post('/alreadyPicked', function (req, res) {
+    console.log(req.body)
     req.body.alreadyPicked.forEach(function (item) {
         kivaferkoi.addAlreadyPicked(item, function (error, rows) {
             if (error) {
@@ -93,6 +94,7 @@ router.delete('/notYetPicked', function (req, res) {
 
 /* POST notYetPicked */
 router.post('/notYetPicked', function (req, res) {
+    console.log(req.body)
     req.body.notYetPicked.forEach(function (item) {
         kivaferkoi.addNotyetPicked(item, function (error, rows) {
             if (error) {
@@ -150,6 +152,7 @@ router.delete('/picked', function (req, res) {
 
 /* POST picked */
 router.post('/picked', function (req, res) {
+    console.log(req.body)
     req.body.picked.forEach(function (item) {
         kivaferkoi.addPicked(item, function (error, rows) {
             if (error) {

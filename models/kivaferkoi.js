@@ -8,7 +8,7 @@ let kivaferkoi = {
         return db.query('SELECT users.id, users.name, users.username, users.avatar FROM notyetpicked INNER JOIN users ON users.id = notyetpicked.id_user', callback)
     },
     getPicked: function (callback) {
-        return db.query('SELECT users.id, users.name, users.username, users.avatar FROM picked INNER JOIN users ON users.id = notyetpicked.id_user', callback)
+        return db.query('SELECT users.id, users.name, users.username, users.avatar FROM picked INNER JOIN users ON users.id = picked.id_user', callback)
     },
     truncateAlreadyPicked: function (callback) {
         return db.query('TRUNCATE TABLE alreadypicked', callback)
@@ -20,13 +20,13 @@ let kivaferkoi = {
         return db.query('TRUNCATE TABLE picked', callback)
     },
     addAlreadyPicked: function (data, callback) {
-        return db.query('INSERT INTO alreadypicked VALUES (?, ?)', [undefined, data.id_user], callback)
+        return db.query('INSERT INTO alreadypicked VALUES (?, ?)', [undefined, data.id], callback)
     },
     addNotyetPicked: function (data, callback) {
-        return db.query('INSERT INTO notyetpicked VALUES (?, ?)', [undefined, data.id_user], callback)
+        return db.query('INSERT INTO notyetpicked VALUES (?, ?)', [undefined, data.id], callback)
     },
     addPicked: function (data, callback) {
-        return db.query('INSERT INTO picked VALUES (?, ?)', [undefined, data.id_user], callback)
+        return db.query('INSERT INTO picked VALUES (?, ?)', [undefined, data.id], callback)
     }
 };
 
