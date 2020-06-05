@@ -127,6 +127,45 @@ router.get('/check/:num_prosit?', function (req, res, next) {
     })
 })
 
+router.get('/get/numProsit', function (req, res, next) {
+    prosit.getNumProsit(function (error, rows) {
+        if(error){
+            res.json({
+                status: "Erreur",
+                message: error
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
+router.get('/get/keywords', function (req, res, next) {
+    prosit.getKeywords(req.body.num_prosit, function (error, rows) {
+        if(error){
+            res.json({
+                status: "Erreur",
+                message: error
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
+router.get('/get/allKeywords', function (req, res) {
+    prosit.getAllKeywords(function (error, rows) {
+        if(error){
+            res.json({
+                status: "Erreur",
+                message: error
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
 router.post('/', function (req, res, next) {
     let data = {
         name: req.body.name,
@@ -230,8 +269,9 @@ router.post('/', function (req, res, next) {
     })
 })
 
-router.get('/get/numProsit', function (req, res, next) {
-    prosit.getNumProsit(function (error, rows) {
+router.put('/update/numProsit', function (req, res) {
+    console.log(req.body.num_prosit)
+    prosit.updateNumprosit(req.body.num_prosit, function (error, rows) {
         if(error){
             res.json({
                 status: "Erreur",
@@ -243,9 +283,9 @@ router.get('/get/numProsit', function (req, res, next) {
     })
 })
 
-router.put('/update/numProsit', function (req, res) {
-    console.log(req.body.num_prosit)
-    prosit.updateNumprosit(req.body.num_prosit, function (error, rows) {
+router.put('/update/keyword', function (req, res) {
+    console.log(req.body)
+    prosit.updateKeyword(req.body.keyword, function (error, rows) {
         if(error){
             res.json({
                 status: "Erreur",
