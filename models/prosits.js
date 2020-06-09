@@ -5,10 +5,10 @@ let prosit = {
         return db.query('SELECT * FROM keywords WHERE keywords.num_prosit = ' + id_prosit ,callback)
     },
     getAllKeywords: function (callback) {
-        return db.query('SELECT * FROM keywords' ,callback)
+        return db.query('SELECT keywords.id, keywords.definiton, keywords.name, prosit.num_prosit FROM keywords INNER JOIN prosit WHERE keywords.num_prosit = prosit.id' ,callback)
     },
     updateKeyword: function (data, callback){
-        return db.query('UPDATE keywords SET keywords.name = ?, keywords.definition = ?, keywords.num_prosit = ? WHERE keywords.id = ' + data.id , [data.name, data.definition, data.num_prosit], callback)
+        return db.query('UPDATE keywords SET keywords.definiton = ? WHERE keywords.id = ' + data.id , [data.definition], callback)
     },
     getHyptothesies: function (id_prosit, callback) {
         return db.query('SELECT * FROM hypothesises WHERE hypothesises.num_prosit = ' + id_prosit ,callback)

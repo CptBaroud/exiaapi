@@ -58,6 +58,7 @@ router.post('/', function (req, res, next) {
              } else {*/
         if (error) {
             res.json({
+                status: 'error',
                 message: 'La requete n\'a pas aboutie',
                 error: error
             });
@@ -87,6 +88,7 @@ router.post('/', function (req, res, next) {
                 })
             } else {
                 res.json({
+                    status: 'error',
                     message: 'L\'utilisateur n\'existe pas',
                     error: 'This user does not exist'
                 })

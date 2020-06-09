@@ -177,7 +177,6 @@ router.post('/', function (req, res, next) {
         scribe: req.body.scribe,
         gestionaire: req.body.gestionaire
     }
-    console.log(req.body)
     prosit.addProsit(data, function (errors, pr) {
         if (errors) {
             console.error(errors)
@@ -270,7 +269,6 @@ router.post('/', function (req, res, next) {
 })
 
 router.put('/update/numProsit', function (req, res) {
-    console.log(req.body.num_prosit)
     prosit.updateNumprosit(req.body.num_prosit, function (error, rows) {
         if(error){
             res.json({
@@ -284,7 +282,6 @@ router.put('/update/numProsit', function (req, res) {
 })
 
 router.put('/update/keyword', function (req, res) {
-    console.log(req.body)
     prosit.updateKeyword(req.body.keyword, function (error, rows) {
         if(error){
             res.json({
