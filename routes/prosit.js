@@ -7,7 +7,7 @@ let errorCount = 0
 let errorsArray = []
 
 /* GET home page. */
-router.get('/:num_prosit?', function (req, res, next) {
+router.get('/:num_prosit?', function (req, res) {
     prosit.getProsit(req.params.num_prosit, function (error, rows) {
         if (error) {
             res.json({
@@ -90,6 +90,33 @@ router.get('/get/all', function (req, res) {
                 message: errors
             })
         } else {
+            console.dir(rows)
+            res.json(rows)
+        }
+    })
+})
+
+router.get('/get/last', function (req, res) {
+    prosit.getLastProsit(function (errors, rows) {
+        if(errors){
+            res.json({
+                status: "Erreur",
+                message: errors
+            })
+        } else {
+            res.json(rows)
+        }
+    })
+})
+
+router.get('/pa/:num_prosit?', function (req, res) {
+    prosit.getPa(req.params.num_prosit, function (errors, rows) {
+        if(errors){
+            res.json({
+                status: "Erreur",
+                message: errors
+            })
+        } else {
             res.json(rows)
         }
     })
@@ -161,6 +188,7 @@ router.get('/get/allKeywords', function (req, res) {
                 message: error
             })
         } else {
+            console.log(rows)
             res.json(rows)
         }
     })

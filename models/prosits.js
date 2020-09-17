@@ -1,5 +1,9 @@
 let db = require('../dbconnection');
 
+
+//Id prosit car chaque aprtie d'un PA est liée a un pa par son ID,
+//donc la colonne num_prosit correspond a l'id du prosit
+//et non pas son numéro selon la numerotation que nous avons mis en place
 let prosit = {
     getKeywords: function (id_prosit, callback) {
         return db.query('SELECT * FROM keywords WHERE keywords.num_prosit = ' + id_prosit ,callback)
@@ -30,6 +34,9 @@ let prosit = {
     },
     getAllProsit: function (callback) {
         return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id, prosit.scribe FROM prosit', callback)
+    },
+    getLastProsit: function (callback) {
+        return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id, prosit.scribe FROM prosit ORDER BY prosit.num_prosit DESC LIMIT 1', callback)
     },
     addKeyword: function (data, callback) {
         return db.query('INSERT INTO keywords VALUE (?, ?, ?, ?)', [undefined, data.name, data.definition, data.num_prosit], callback)
