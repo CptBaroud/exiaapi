@@ -100,7 +100,7 @@ router.post('/', function (req, res, next) {
 });
 
 /**
- * Route pour récupéré tout les deviseurs
+ * Route pour récupéré tout les users
  */
 router.get('/all', function (req, res) {
     login.getAllUser(function (error, rows) {

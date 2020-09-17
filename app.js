@@ -19,6 +19,7 @@ app.io = require('socket.io')()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.set('port', 3005);
 
 app.use(logger('dev'));
 app.use(cors())

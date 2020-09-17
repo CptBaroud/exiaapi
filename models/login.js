@@ -22,6 +22,10 @@ let login = {
     },
     getAllUserId: function (callback) {
         return db.query('SELECT users.name, users.id FROM users', callback)
+    },
+    editAvatar: function (data, callback) {
+        console.dir(data)
+        return db.query('UPDATE users SET users.avatar = ? WHERE users.id = ?', [data.avatar, data.id], callback )
     }
 };
 
