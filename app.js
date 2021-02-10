@@ -4,13 +4,26 @@ const cors = require('cors')
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongo = require('mongoose')
+
+require('dotenv').config()
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const prositRouter = require('./routes/prosit');
+const keywordRouter = require('./routes/keywordRoute');
 const kivaferkoiRouter = require('./routes/kivaferkoi');
 const socketRouter = require('./routes/socket');
+
+mongo.connect(process.env.MONGODB_LINK, {useNewUrlParser: true, useUnifiedTopology: true})
+let db = mongo.connection;
+
+db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
+db.once('open', function () {
+  console.log("Connexion à la base OK");
+});
+
 
 const app = express();
 app.io = require('socket.io')()
@@ -19,7 +32,6 @@ app.io = require('socket.io')()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.set('port', 3005);
 
 app.use(logger('dev'));
 app.use(cors())
@@ -34,6 +46,7 @@ app.use('/prosit', prositRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/kivaferkoi', kivaferkoiRouter);
+app.use('/keywords', keywordRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -53,7 +66,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-console.log('Server start')
 
 module.exports = app;

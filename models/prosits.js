@@ -1,70 +1,29 @@
-let db = require('../dbconnection');
+const mongo = require('mongoose')
+    , Schema = mongo.Schema
 
-
-//Id prosit car chaque aprtie d'un PA est liée a un pa par son ID,
-//donc la colonne num_prosit correspond a l'id du prosit
-//et non pas son numéro selon la numerotation que nous avons mis en place
-let prosit = {
-    getKeywords: function (id_prosit, callback) {
-        return db.query('SELECT * FROM keywords WHERE keywords.num_prosit = ' + id_prosit ,callback)
+const prosit_schema = new Schema({
+    prositNumber: Number,
+    name: String,
+    created: {
+        type: Date,
+        default: new Date()
     },
-    getAllKeywords: function (callback) {
-        return db.query('SELECT keywords.id, keywords.definiton, keywords.name, prosit.num_prosit FROM keywords INNER JOIN prosit WHERE keywords.num_prosit = prosit.id' ,callback)
-    },
-    updateKeyword: function (data, callback){
-        return db.query('UPDATE keywords SET keywords.definiton = ? WHERE keywords.id = ' + data.id , [data.definition], callback)
-    },
-    getHyptothesies: function (id_prosit, callback) {
-        return db.query('SELECT * FROM hypothesises WHERE hypothesises.num_prosit = ' + id_prosit ,callback)
-    },
-    getConstraints: function (id_prosit, callback) {
-        return db.query('SELECT * FROM constraints WHERE constraints.num_prosit = ' + id_prosit ,callback)
-    },
-    getPa: function (id_prosit, callback) {
-        return db.query('SELECT * FROM pa WHERE pa.num_prosit = ' + id_prosit ,callback)
-    },
-    getProblematics: function (id_prosit, callback) {
-        return db.query('SELECT * FROM problematics WHERE problematics.num_prosit = ' + id_prosit ,callback)
-    },
-    check: function(numProsit, callback){
-        return db.query('SELECT prosit.num_prosit FROM prosit WHERE prosit.num_prosit = ' + numProsit, callback )
-    },
-    getProsit: function (id, callback) {
-        return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id FROM prosit WHERE prosit.num_prosit = ' + id, callback)
-    },
-    getAllProsit: function (callback) {
-        return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id, prosit.scribe FROM prosit', callback)
-    },
-    getLastProsit: function (callback) {
-        return db.query('SELECT prosit.name, prosit.num_prosit, prosit.context, prosit.generalisation, prosit.id, prosit.scribe FROM prosit ORDER BY prosit.num_prosit DESC LIMIT 1', callback)
-    },
-    addKeyword: function (data, callback) {
-        return db.query('INSERT INTO keywords VALUE (?, ?, ?, ?)', [undefined, data.name, data.definition, data.num_prosit], callback)
-    },
-    addHyptothesies: function (data, callback) {
-        return db.query('INSERT INTO hypothesises VALUE (?, ?, ?)', [undefined, data.name, data.num_prosit], callback)
-    },
-    addConstraints: function (data, callback) {
-        return db.query('INSERT INTO constraints VALUE (?, ?, ?)', [undefined, data.name, data.num_prosit], callback)
-    },
-    addPa: function (data, callback) {
-        return db.query('INSERT INTO pa VALUE (?, ?, ?)', [undefined, data.name, data.num_prosit], callback)
-    },
-    addProblematics: function (data, callback) {
-        return db.query('INSERT INTO problematics VALUE (?, ?, ?)', [undefined, data.name, data.num_prosit], callback)
-    },
-    addProsit: function (data, callback) {
-        return db.query('INSERT INTO prosit VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)', [undefined, data.num_prosit, data.name, data.context, data.generalisation, data.scribe, data.animateur, data.secretaire, data.gestionaire], callback)
-    },
-    getLastId: function  (callback) {
-        return db.query('SELECT prosit.id FROM prosit ORDER BY prosit.id DESC', callback)
-    },
-    getNumProsit: function (callback) {
-        return db.query('SELECT role.num_prosit FROM role', callback)
-    },
-    updateNumprosit: function (data, callback) {
-        return db.query('UPDATE role SET role.num_prosit = ? WHERE role.id = 1',data, callback)
+    keywords: [{
+        type: Schema.Types.ObjectId,
+        ref: 'keyword'
+    }],
+    context: String,
+    constraints: [String],
+    generalization: String,
+    problematic: [String],
+    hypotesies: [String],
+    summary: [String],
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
     }
-};
+})
 
-module.exports = prosit;
+const prosit = mongo.model('prosit', prosit_schema)
+
+module.exports = prosit

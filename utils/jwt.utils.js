@@ -10,6 +10,12 @@ module.exports = {
         }, JWT_SECRET_SIGN)
     },
 
+    generateOneTImeToken: function () {
+        return jwt.sign({
+            type: 0
+        }, JWT_SECRET_SIGN)
+    },
+
     getTokenInfo: function (token) {
         return jwt.decode(token)
     }
