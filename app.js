@@ -9,10 +9,11 @@ const mongo = require('mongoose')
 require('dotenv').config()
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/userRouter');
+const teamRouter = require('./routes/teamRouter');
 const loginRouter = require('./routes/login');
 const prositRouter = require('./routes/prosit');
-const keywordRouter = require('./routes/keywordRoute');
+const keywordRouter = require('./routes/keywordRouter');
 const kivaferkoiRouter = require('./routes/kivaferkoi');
 const socketRouter = require('./routes/socket');
 
@@ -44,6 +45,7 @@ app.use('/', indexRouter);
 app.use('/testSocketExia', socketRouter)
 app.use('/prosit', prositRouter);
 app.use('/users', usersRouter);
+app.use('/team', teamRouter);
 app.use('/login', loginRouter);
 app.use('/kivaferkoi', kivaferkoiRouter);
 app.use('/keywords', keywordRouter);

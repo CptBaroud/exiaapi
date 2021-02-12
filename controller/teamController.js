@@ -1,10 +1,10 @@
-const team = require('../models/team')
-const user = require('../models/users')
+const teamModel = require('../models/team')
+const userModel = require('../models/users')
 
 let teamController = {
 
     get(req, res) {
-        team
+        teamModel
             .find()
             .populate('scribe secretaire animateur gestionnaire')
             .exec(function (err, doc) {
@@ -28,15 +28,26 @@ let teamController = {
      */
     async create(req, res) {
         // On load tout les users de la table
-        const users = await user.find().exec()
+        const users = await userModel.find().exec()
 
         //Il doit y avoir autant d'equipes qu'il y'a d'utilisateurs
         //Pour que chacun puisse avoir au moins une fois chaque roles
         const teams = []
 
         for (let a = 0; a <= users.length; a++){
+            // On initialise l'objet
+            let team = { animateur: '', secretaire: '', gestionaire: '', scribe: ''}
+            let mark = 0
+            //On tire au hasard un utilisateur
+            let user = users[randomInt(users.length)]
+
+            if (!checkRole(user._id, 'animateur', teams)) {
+                team.animateur = user.name
+            }
+            teams.push(team)
         }
 
+        res.send(teams)
     }
 }
 
@@ -47,4 +58,15 @@ function randomInt(size) {
         return Math.floor(Math.random() * size)
     }
     return null
+}
+
+/**
+ * Determine si un utilsateur a déjà un role attribué
+ * @param user
+ * @param role
+ * @param teamArray
+ * @returns {*}
+ */
+function checkRole (user, role, teamArray) {
+    return teamArray.includes(item => item[role] === user)
 }
