@@ -34,20 +34,31 @@ let teamController = {
         //Pour que chacun puisse avoir au moins une fois chaque roles
         const teams = []
 
-        for (let a = 0; a <= users.length; a++){
+        for (let a = 1; a <= users.length; a++) {
             // On initialise l'objet
-            let team = { animateur: '', secretaire: '', gestionaire: '', scribe: ''}
-            let mark = 0
-            //On tire au hasard un utilisateur
-            let user = users[randomInt(users.length)]
+            let team = {}
+            // Utilisateur
+            let user
 
-            if (!checkRole(user._id, 'animateur', teams)) {
-                team.animateur = user.name
+            //Tant que l'equipe n'est pas complète
+            // Cad que les 4 postes soient pourvu
+            // Donc que le nombre de clées de l'objet
+            // Soit de 4
+            while (Object.keys(team).length < 2) {
+                user = users[randomInt(users.length)]
+                if (!checkTeam(user, team)) {
+                    console.log('Good')
+                    if (!checkRole(user, 'animateur', teams)) {
+                        team.animateur = user
+                    } else if (!checkRole(user, 'gestionaire', teams)) {
+                        team.gestionaire = user
+                    }
+                }
             }
             teams.push(team)
         }
-
         res.send(teams)
+
     }
 }
 
@@ -67,6 +78,24 @@ function randomInt(size) {
  * @param teamArray
  * @returns {*}
  */
-function checkRole (user, role, teamArray) {
-    return teamArray.includes(item => item[role] === user)
+function checkRole(user, role, teamArray) {
+    return teamArray.filter((item) => {
+        if (item[role]) {
+            return item[role]._id === user._id
+        }
+        return false
+    }).length > 0
+}
+
+/**
+ * On verifie que l'utilisateur n'est pas déjà présent dans l'equipe
+ * @param user
+ * @param team
+ */
+function checkTeam(user, team) {
+    return Object.values(team).filter((item) => {
+        console.log(item.name)
+        console.log(user.name)
+        return item._id === user._id
+    })
 }
